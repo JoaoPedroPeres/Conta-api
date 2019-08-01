@@ -3,22 +3,51 @@ package com.db1.conta.contaapi.domain.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import org.springframework.util.Assert;
 
+@Entity
+@Table(name="conta")
 public class Conta {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@ManyToOne
+	@JoinColumn(name = "agencia_id", nullable = false)
 	private Agencia agencia;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "conta_Tipo", nullable = false)
 	private ContaTipo tipo;
 	
+	@Column(name = "numero", length = 20, nullable = false, unique = true)
 	private String numero;
 	
+	@Column(name = "numero", length = 20, nullable = false)
 	private Double saldo;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cliente", nullable = false)
 	private Cliente cliente;
 	
+	@ElementCollection
 	private List<Historico> listaHistoricos = new ArrayList<>();
 
 	public Conta(String numero, Agencia agencia, ContaTipo tipo, Double saldo, Cliente cliente) {
@@ -60,5 +89,8 @@ public class Conta {
 
 	public List<Historico> getListaHistoricos() {
 		return listaHistoricos;
+	}
+	public void criarHistorico() {
+		
 	}
 }
