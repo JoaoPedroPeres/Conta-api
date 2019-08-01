@@ -28,6 +28,8 @@ public class Cidade {
 	@Column(name = "estado", length = 2, nullable = false)
 	private Estado estado;
 	
+	protected Cidade() {}
+	
 	public Cidade(String nome, Estado estado) {
 		Assert.hasText(nome, "Nome é obrigatório");
 		Assert.notNull(estado, "Estado é obrigatório");
