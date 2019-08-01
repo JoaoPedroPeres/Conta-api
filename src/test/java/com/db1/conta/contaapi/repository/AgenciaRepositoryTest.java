@@ -60,7 +60,7 @@ public class AgenciaRepositoryTest {
 	
 	@Test
 	public void deveRetornarAgenciaPorEstado() {
-		Cidade cidade = new Cidade("Maringá", Estado.PR);
+		Cidade cidade = cidadeRepository.save(new Cidade("Maringá", Estado.PR));
 		Agencia agencia = new Agencia("6544", "2", cidade);
 		agenciaRepository.save(agencia);
 		

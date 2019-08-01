@@ -2,8 +2,11 @@ package com.db1.conta.contaapi.domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +29,7 @@ public class Cliente {
 	@Column(name = "nome", length = 60, nullable = false, unique = true)
 	private String nome;
 	
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Endereco> listaEnderecos = new ArrayList<>();
 	
 	@Column(name = "cpf", length = 11, nullable = false, unique = true)
@@ -39,6 +42,15 @@ public class Cliente {
 		Assert.hasText(nome, "Deve ser adicionado um nome válido");
 		this.cpf = cpf;
 		this.nome = nome;
+	}
+	
+	public void addEndereco(String logradouro, String numero, Cidade cidade, TipoEndereco tipoEndereco, String complemento, String cep) {
+		Endereco endereco = new Endereco(this, logradouro, numero, cidade, tipoEndereco, complemento, cep);
+		this.listaEnderecos.add(endereco);
+	}
+	
+	public void addEnderecoCobranca(String logradouro, String numero, Cidade cidade, TipoEndereco tipoEndereco, String complemento, String cep) {
+		this.addEndereco(logradouro, numero, cidade, TipoEndereco.Cobrança, complemento, cep);
 	}
 
 	public Long getId() {

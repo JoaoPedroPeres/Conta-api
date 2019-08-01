@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,14 +32,18 @@ public class Endereco {
 	@Column(name = "logradouro", length = 60, nullable = false, unique = true)
 	private String logradouro;
 	
-	@Column(name = "numero", length = 60, nullable = false, unique = true)
+	@Column(name = "numero", length = 20, nullable = false, unique = true)
 	private String numero;
 	
 	@ManyToOne
 	@JoinColumn(name = "cidade", nullable = false, unique = true)
 	private Cidade cidade;
 	
-	@Column(name = "tipoEndereco", nullable = false, unique = true)
+	@Column(name = "cep")
+	private String cep;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_Endereco", nullable = false)
 	private TipoEndereco tipoEndereco;
 	
 	@Column(name = "complemento", length = 60, nullable = false, unique = true)
@@ -45,10 +51,12 @@ public class Endereco {
 	
 	protected Endereco() {}
 	
-	public Endereco(Cliente cliente, String logradouro, String numero, Cidade cidade, TipoEndereco tipoEndereco, String complemento) {
+	public Endereco(Cliente cliente, String logradouro, String numero, Cidade cidade, TipoEndereco tipoEndereco, String complemento, String cep) {
 		Assert.notNull(cidade, "Cidade inválida");
 		Assert.hasText(logradouro, "É necessário haver um logradouro");
 		Assert.hasText(numero, "Número inválido");
+		Assert.hasText(cep, "CEP inválido");
+		Assert.isTrue(cep.length() == 8, "CEP inválido");
 		Assert.notNull(tipoEndereco, "O endereço deve ter um tipo");
 		Assert.notNull(cliente, "Deve ser adicionado um cliente");
 		this.cidade = cidade;
@@ -57,6 +65,7 @@ public class Endereco {
 		this.logradouro = logradouro;
 		this.numero = numero;
 		this.tipoEndereco = tipoEndereco;
+		this.cep = cep;
 	}
 
 	public Long getId() {

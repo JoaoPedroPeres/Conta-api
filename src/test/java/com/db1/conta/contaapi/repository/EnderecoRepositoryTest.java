@@ -41,7 +41,7 @@ public class EnderecoRepositoryTest {
 	public void deveSalvarUmEnderecoComCliente() {
 		Cidade cidade = cidadeRepository.save(new Cidade("Maringá", Estado.AC));
 		Cliente cliente = clienteRepository.save(new Cliente("José Almeida", "11111111111"));
-		Endereco endereco = new Endereco(cliente, "Rua Marcílio Dias", "4510", cidade, TipoEndereco.Comercial, "B");
+		Endereco endereco = new Endereco(cliente, "Rua Marcílio Dias", "4510", cidade, TipoEndereco.Comercial, "B", "44444444");
 		
 		Endereco enderecoSalva = enderecoRepository.save(endereco);
 		
@@ -57,7 +57,7 @@ public class EnderecoRepositoryTest {
 	public void deveBuscarEnderecoPorLogradouro() {
 		Cidade cidade = cidadeRepository.save(new Cidade("Maringá", Estado.PR));
 		Cliente cliente = clienteRepository.save(new Cliente("João Cleber", "22222222222"));
-		Endereco endereco = new Endereco(cliente, "Rua Marcílio Dias", "4510", cidade, TipoEndereco.Comercial, "B");
+		Endereco endereco = new Endereco(cliente, "Rua Marcílio Dias", "4510", cidade, TipoEndereco.Comercial, "B", "66666666");
 		
 		enderecoRepository.save(endereco);
 		
