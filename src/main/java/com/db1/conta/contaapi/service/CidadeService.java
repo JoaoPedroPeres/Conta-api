@@ -1,6 +1,7 @@
 package com.db1.conta.contaapi.service;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -43,28 +44,63 @@ public class CidadeService {
 		if (opCidade.isPresent()) {
 			Cidade cidade = opCidade.get();
 			cidadeRepository.delete(cidade);
+		}else {
+			throw new RuntimeException("Cidade De ID" + cidadeId + "Não Encontrada");
 		}
-		throw new RuntimeException("Cidade De ID" + cidadeId + "Não Encontrada");
 	}
 	
-	public List<Cidade> procurarTodasAsCidades() {
-		List<Cidade> cidade = new ArrayList<>();
-		cidade = cidadeRepository.findAll();
-		return cidade;
+//	public List<Cidade> procurarTodasAsCidades() {
+//		List<Cidade> cidade = new ArrayList<>();
+//		cidade = cidadeRepository.findAll();
+//		return cidade;
+//	}
+	
+	public List<CidadeResponseDTO> findAll() {
+		List<Cidade> cidades = cidadeRepository.findAll();
+		List<CidadeResponseDTO> response = CidadeAdapter.entityToResponse(cidades);
+		return response;
 	}
 	
-	public Cidade procurarCidadePorId(Long cidadeId) {
+//	public Cidade procurarCidadePorId(Long cidadeId) {
+//		Optional<Cidade> opCidade = cidadeRepository.findById(cidadeId);
+//		if (opCidade.isPresent()) {
+//			Cidade cidade = opCidade.get();
+//			return cidade;
+//		}
+//		throw new RuntimeException("Cidade De ID" + cidadeId + "Não Encontrada");
+//	}
+	
+	public CidadeResponseDTO procurarCidadePorId(Long cidadeId) {
 		Optional<Cidade> opCidade = cidadeRepository.findById(cidadeId);
 		if (opCidade.isPresent()) {
 			Cidade cidade = opCidade.get();
-			return cidade;
+			return CidadeAdapter.entityToResponse(cidade);
 		}
 		throw new RuntimeException("Cidade De ID" + cidadeId + "Não Encontrada");
 	}
 	
-	public Cidade procurarCidadePorNome(String nome, Estado estado) {
-		Cidade cidade = cidadeRepository.findByNome(nome);
-		Assert.notNull(cidade, "Cidade De Nome" + nome + "Não Encontrada");
-		return cidade;
+	
+//	public Cidade procurarCidadePorNome(String nome) {
+//		Cidade cidade = cidadeRepository.findByNome(nome);
+//		Assert.notNull(cidade, "Cidade De Nome" + nome + "Não Encontrada");
+//		return cidade;
+//	}
+	
+	public CidadeResponseDTO findByNome(String nome) {
+		//versao normal
+	/*  
+	 *  Optional<Cidade> opCidade = cidadeRepository.findByNomeOptional(nome);
+		if (opCidade.isPresent()) {
+			Cidade cidade = opCidade.get();
+			CidadeResponseDTO cidadeResponse = CidadeAdapter.entityToResponse(cidade);
+			return cidadeResponse;
+		}
+		throw new RuntimeException("Cidade de nome" + nome + "nao encontrada");*/
+		
+		//Versao Java 8
+		
+		return cidadeRepository.findByNomeOptional(nome)
+				.map(CidadeAdapter::entityToResponse)
+				.orElseThrow(() -> new RuntimeException("Cidade de nome"+ nome + "nao encontrada"));
 	}
 }

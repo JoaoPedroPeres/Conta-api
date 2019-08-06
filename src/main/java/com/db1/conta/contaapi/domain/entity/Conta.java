@@ -40,7 +40,7 @@ public class Conta {
 	@Column(name = "numero", length = 20, nullable = false, unique = true)
 	private String numero;
 	
-	@Column(name = "numero", length = 20, nullable = false)
+	@Column(name = "saldo", length = 20, nullable = false)
 	private Double saldo;
 	
 	@ManyToOne(cascade = CascadeType.ALL)

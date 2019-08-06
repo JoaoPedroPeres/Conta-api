@@ -35,7 +35,7 @@ public class Historico {
 	@Column(name = "valor", length = 20, nullable = false)
 	private Double valor;
 	
-	@Column(name = "valor", length = 20, nullable = false)
+	@Column(name = "valorResultante", length = 20, nullable = false)
 	private Double valorResultante;
 	
 	public Historico(HistoricoTipo tipo, Double valor, Conta conta, Double valorResultante) {
